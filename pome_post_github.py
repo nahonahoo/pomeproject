@@ -59,43 +59,49 @@ def get_post_number() -> int:
         return 0
 
 
+# ── neta_database.csv から使用済みタイトルを取得 ─────────────────────
+def get_used_titles() -> set:
+    """neta_database.csv に記録済みのネタタイトル一覧を返す。"""
+    used = set()
+    try:
+        with open(NETA_DATABASE, 'r', encoding='utf-8') as f:
+            for row in csv.reader(f):
+                if len(row) >= 3:
+                    used.add(row[2].strip())  # 3列目: ネタタイトル
+    except FileNotFoundError:
+        pass
+    return used
+
+
 # ── neta_list.txt から未使用ネタを取得 ──────────────────────────────
 def load_next_neta() -> dict | None:
     """
     neta_list.txt の行フォーマット: ネタタイトル|ネタ元|ジャンル
-    済 マークが付いていない最初の行を返す。
+    neta_database.csv に未記録の最初の行を返す。済マークは付けない。
     """
-    lines = []
-    target_idx = None
-    target_neta = None
+    used_titles = get_used_titles()
+    print(f"    使用済みタイトル数: {len(used_titles)}")
 
     with open(NETA_LIST, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
-    for i, line in enumerate(lines):
+    for line in lines:
         stripped = line.rstrip('\n')
-        if stripped.startswith('済') or stripped.startswith('#') or not stripped.strip():
+        if stripped.startswith('#') or not stripped.strip():
             continue
         parts = stripped.split('|')
         if len(parts) < 2:
             continue
-        target_idx = i
-        target_neta = {
-            'title':  parts[0].strip(),
+        title = parts[0].strip()
+        if title in used_titles:
+            continue  # CSV に記録済みはスキップ
+        return {
+            'title':  title,
             'source': parts[1].strip() if len(parts) > 1 else '',
             'genre':  parts[2].strip() if len(parts) > 2 else '',
         }
-        break
 
-    if target_neta is None:
-        return None
-
-    # 済 マークを付ける
-    lines[target_idx] = '済' + lines[target_idx]
-    with open(NETA_LIST, 'w', encoding='utf-8') as f:
-        f.writelines(lines)
-
-    return target_neta
+    return None
 
 
 # ── 投稿文生成 ────────────────────────────────────────────────────────
