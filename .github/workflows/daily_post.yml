@@ -24,7 +24,7 @@ jobs:
       - name: 依存パッケージインストール
         run: pip install -r requirements.txt
 
-      - name: 投稿生成 & メール送信
+      - name: "投稿生成 & メール送信"
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GMAIL_USER:        ${{ secrets.GMAIL_USER }}
