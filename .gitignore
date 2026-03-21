@@ -1,0 +1,17 @@
+# 機密情報
+config.json
+GeminiAPIキー.txt
+
+# 生成済みドラフト（大量のファイルになるため除外）
+drafts/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db

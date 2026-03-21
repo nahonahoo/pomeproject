@@ -1,0 +1,42 @@
+name: ポメラニアン教 毎朝投稿
+
+on:
+  schedule:
+    # 毎朝7時 JST (= UTC 22:00 前日)
+    - cron: '0 22 * * *'
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # neta_list.txt をコミットするために必要
+
+    steps:
+      - name: チェックアウト
+        uses: actions/checkout@v4
+
+      - name: Python セットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 依存パッケージインストール
+        run: pip install -r requirements.txt
+
+      - name: 投稿生成 & メール送信
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_USER:        ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD:${{ secrets.GMAIL_APP_PASSWORD }}
+          GMAIL_TO:          ${{ secrets.GMAIL_TO }}
+          AMAZON_ID:         wgenjp-22
+        run: python pome_post_github.py
+
+      - name: neta_list.txt の更新をコミット
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add neta_list.txt neta_database.csv
+          git diff --staged --quiet || git commit -m "chore: 済マーク更新 $(date +'%Y-%m-%d')"
+          git push
