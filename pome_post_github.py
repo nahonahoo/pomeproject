@@ -14,6 +14,16 @@ from email.mime.text import MIMEText
 
 import anthropic
 
+# ── デバッグ: neta_list.txt の内容を表示 ─────────────────────────────
+_debug_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'neta_list.txt')
+print(f"=== DEBUG: neta_list.txt の場所: {_debug_path} ===")
+try:
+    with open(_debug_path, 'r', encoding='utf-8') as _f:
+        print(_f.read())
+except Exception as _e:
+    print(f"読み込みエラー: {_e}")
+print("=== DEBUG END ===\n")
+
 # ── 設定 ─────────────────────────────────────────────────────────────
 BASE_DIR      = os.path.dirname(os.path.abspath(__file__))
 NETA_LIST     = os.path.join(BASE_DIR, 'neta_list.txt')
