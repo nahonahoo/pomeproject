@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: チェックアウト
         uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
 
       - name: Python セットアップ
         uses: actions/setup-python@v5
