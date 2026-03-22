@@ -30,7 +30,7 @@ jobs:
           GMAIL_USER:        ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           GMAIL_TO:          ${{ secrets.GMAIL_TO }}
-          AMAZON_ID:         wgenjp-22
+          AMAZON_ID:         ${{ secrets.AMAZON_ID }}
         run: python pome_post_github.py
 
       - name: neta_list.txt の更新をコミット
