@@ -1,6 +1,8 @@
 # 機密情報
 config.json
 GeminiAPIキー.txt
+credentials.json
+token.json
 
 # 生成済みドラフト（大量のファイルになるため除外）
 drafts/
