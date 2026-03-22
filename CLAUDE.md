@@ -69,13 +69,5 @@
 - drafts/：生成された投稿素材の保存先
 
 ## 自動化スクリプト
-- upload_to_drive.py：pome_neta_list.csvをGoogleドライブに自動アップロード
 - pome_post.py：ローカル実行用投稿文自動生成
 - pome_post_github.py：GitHub Actions用自動生成
-
-## 作業後の標準手順
-CSVを更新したら必ずupload_to_drive.pyを実行してGoogleドライブに同期すること。
-
-## Googleドライブ連携
-pome_neta_list.csvはGoogleドライブにも同期管理している。
-更新のたびにupload_to_drive.pyで自動アップロードする。
